@@ -10,18 +10,22 @@ use App\Models\User;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function index () {
+    public function index() 
+    {
         return User::all();
     }
     
-    public function create (CreateUserRequest $createUserRequest) {
+    public function create(CreateUserRequest $createUserRequest) 
+    {
         try {
             $user = User::Create($createUserRequest->validated());
             $token = $user->createToken('registration_token');
@@ -36,7 +40,8 @@ class UserController extends BaseController
         }
     }
 
-    public function login (LoginUserRequest $loginUserRequest) {
+    public function login(LoginUserRequest $loginUserRequest) 
+    {
         try {
             $user = User::firstWhere('email', $loginUserRequest->email);
             $response = [
@@ -55,6 +60,15 @@ class UserController extends BaseController
                 'error' => $error,
             ];
         }
+    }
+
+    public function post(Request $request)
+    {
+        // add validated here
+        return Auth::user()->posts()->create([
+            'post_content' => $request->post_content
+        ]);
+
     }
 
 }

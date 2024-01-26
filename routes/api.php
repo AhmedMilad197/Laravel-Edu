@@ -24,8 +24,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(UserController::class)->group(function () {
     Route::post('/create', 'create');
     Route::post('/login', 'login');
+    
+    // add role for normal user to place this api inside a gurad.
+    
+    Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-        Route::get('/index', 'index');
+        Route::post('/post', 'post');
+        
+        Route::middleware(['role:admin'])->group(function () {
+            Route::get('/index', 'index');
+        });
     });
 });
