@@ -24,3 +24,11 @@ Route::get('/spatie/query-builder', function () {
         ->allowedFilters(['name', 'email'])
         ->get();
 });
+
+/**
+ * 
+ * Use the laravel query scopes.
+ */
+Route::get('/local-scopes', function () {
+    return User::Admin()->get();
+});
