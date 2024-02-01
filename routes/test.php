@@ -2,6 +2,7 @@
 
 use App\Models\Post;
 use App\Models\User;
+use App\Notifications\TestEnrollment;
 use Illuminate\Support\Facades\Route;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -31,4 +32,14 @@ Route::get('/spatie/query-builder', function () {
  */
 Route::get('/local-scopes', function () {
     return User::Admin()->get();
+});
+
+Route::get('/notify/{user}', function (User $user) {
+    $user->notify(new TestEnrollment([
+        'body' => 'This is the body',
+        'enrollment_text' => 'This is the enrollment text', 
+        'url' => 'This is the url', 
+        'thank_you' => 'This is thank you'
+    ]));
+    return 'Sent email.';
 });
