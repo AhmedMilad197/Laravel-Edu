@@ -29,7 +29,7 @@ Route::controller(UserController::class)->group(function () {
 
         Route::post('/post', 'post');
         
-        Route::middleware(['role:admin'])->group(function () {
+        Route::middleware(['can:view users'])->group(function () {
             Route::get('/index', 'index');
         });
     });
